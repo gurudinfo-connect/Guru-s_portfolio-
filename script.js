@@ -11,9 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     let w, h, particles;
 
-    function getAccent() {
-      const v = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-      return v || '#00c8ff';
+    function getParticleStyle() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      // Light backgrounds need a darker, slightly more opaque dot to read
+      // with the same visual weight as a bright dot on a dark background.
+      return isLight
+        ? { color: '#3a2a18', dotAlpha: 0.55, lineAlpha: 0.22 }
+        : { color: '#ffffff', dotAlpha: 0.7, lineAlpha: 0.26 };
     }
 
     function resize() {
@@ -34,9 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function step() {
       ctx.clearRect(0, 0, w, h);
-      const accent = getAccent();
-      ctx.fillStyle = accent;
-      ctx.strokeStyle = accent;
+      const { color, dotAlpha, lineAlpha } = getParticleStyle();
+      ctx.fillStyle = color;
+      ctx.strokeStyle = color;
 
       particles.forEach(p => {
         p.x += p.vx;
@@ -48,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let i = 0; i < particles.length; i++) {
         const a = particles[i];
 
-        ctx.globalAlpha = 0.7;
+        ctx.globalAlpha = dotAlpha;
         ctx.beginPath();
         ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
         ctx.fill();
@@ -58,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const dx = a.x - b.x, dy = a.y - b.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 130) {
-            ctx.globalAlpha = (1 - dist / 130) * 0.26;
+            ctx.globalAlpha = (1 - dist / 130) * lineAlpha;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
