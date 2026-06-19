@@ -514,28 +514,30 @@
       </div>
       <div class="contact-form reveal">
         <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:1.5rem">Send a Message</h3>
+        <form id="contact-form">
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Your Name</label>
-            <input type="text" class="form-input" id="form-name" placeholder="John Doe">
+            <input type="text" class="form-input" id="form-name" name="name" placeholder="John Doe">
           </div>
           <div class="form-group">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-input" id="form-email" placeholder="john@example.com">
+            <input type="email" class="form-input" id="form-email" name="email" placeholder="john@example.com">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">Subject</label>
-          <input type="text" class="form-input" id="form-subject" placeholder="Job Opportunity / Collaboration">
+          <input type="text" class="form-input" id="form-subject" name="subject" placeholder="Job Opportunity / Collaboration">
         </div>
         <div class="form-group">
           <label class="form-label">Message</label>
-          <textarea class="form-textarea" id="form-message" placeholder="Hello Guru, I'd like to discuss..."></textarea>
+          <textarea class="form-textarea" id="form-message" name="message" placeholder="Hello Guru, I'd like to discuss..."></textarea>
         </div>
-        <button class="btn btn-primary" id="send-btn" onclick="handleSend()" style="width:100%;justify-content:center">
-          ✉️ Send Message
+        <button type="submit" class="btn btn-primary" id="send-btn" style="width:100%;justify-content:center">
+          💬 Send via WhatsApp
         </button>
         <div id="form-msg" style="margin-top:.75rem;font-size:.85rem;display:none"></div>
+        </form>
       </div>
     </div>
   </div>
@@ -569,3 +571,4 @@
 <script src="script.js"></script>
 </body>
 </html>
+
