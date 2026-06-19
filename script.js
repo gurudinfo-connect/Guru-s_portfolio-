@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.35,
         vy: (Math.random() - 0.5) * 0.35,
-        r: Math.random() * 1.8 + 0.6
+        r: Math.random() * 1.8 + 1.2
       }));
     }
 
@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       for (let i = 0; i < particles.length; i++) {
         const a = particles[i];
+
         ctx.globalAlpha = 0.7;
         ctx.beginPath();
         ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const dx = a.x - b.x, dy = a.y - b.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 130) {
-            ctx.globalAlpha = (1 - dist / 130) * 0.18;
+            ctx.globalAlpha = (1 - dist / 130) * 0.26;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -304,3 +305,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
   });
 });
+
