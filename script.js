@@ -242,18 +242,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ---------- 10. CONTACT FORM ---------- */
-function handleSend() {
+/* Sends the message via WhatsApp click-to-chat: opens WhatsApp (app on
+   mobile, web.whatsapp.com on desktop) with the visitor's message
+   pre-filled, ready to send to Guru's number. No backend needed. */
+const WHATSAPP_NUMBER = '918374444525'; // country code + number, no + or spaces
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
   const nameEl = document.getElementById('form-name');
   const emailEl = document.getElementById('form-email');
   const subjectEl = document.getElementById('form-subject');
   const messageEl = document.getElementById('form-message');
   const msgEl = document.getElementById('form-msg');
   const sendBtn = document.getElementById('send-btn');
-
-  const name = nameEl.value.trim();
-  const email = emailEl.value.trim();
-  const subject = subjectEl.value.trim() || 'Portfolio Contact';
-  const message = messageEl.value.trim();
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -263,38 +266,41 @@ function handleSend() {
     msgEl.style.color = isError ? '#ff5d6c' : 'var(--accent3)';
   }
 
-  if (!name || !email || !message) {
-    showMsg('Please fill in your name, email, and message before sending.', true);
-    return;
-  }
-  if (!emailPattern.test(email)) {
-    showMsg('Please enter a valid email address.', true);
-    return;
-  }
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-  // No backend is connected, so we hand the message off to the visitor's
-  // own email client, pre-filled and ready to send to Guru directly.
-  const to = 'guru.d.info@gmail.com';
-  const body =
-    'Name: ' + name + '\n' +
-    'Email: ' + email + '\n\n' +
-    message;
+    const name = nameEl.value.trim();
+    const email = emailEl.value.trim();
+    const subject = subjectEl.value.trim() || 'Portfolio Contact';
+    const message = messageEl.value.trim();
 
-  const mailLink =
-    'mailto:' + to +
-    '?subject=' + encodeURIComponent(subject) +
-    '&body=' + encodeURIComponent(body);
+    if (!name || !email || !message) {
+      showMsg('Please fill in your name, email, and message before sending.', true);
+      return;
+    }
+    if (!emailPattern.test(email)) {
+      showMsg('Please enter a valid email address.', true);
+      return;
+    }
 
-  const originalLabel = sendBtn.innerHTML;
-  sendBtn.innerHTML = '✅ Opening your email app...';
-  sendBtn.disabled = true;
+    const text =
+      'Hi Guru, this is ' + name + ' (' + email + ').\n' +
+      'Subject: ' + subject + '\n\n' +
+      message;
 
-  window.location.href = mailLink;
+    const waLink = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text);
 
-  showMsg('Your email app should now open with the message ready to send. If it didn\'t, email guru.d.info@gmail.com directly.', false);
+    const originalLabel = sendBtn.innerHTML;
+    sendBtn.innerHTML = '✅ Opening WhatsApp...';
+    sendBtn.disabled = true;
 
-  setTimeout(() => {
-    sendBtn.innerHTML = originalLabel;
-    sendBtn.disabled = false;
-  }, 2500);
-}
+    window.open(waLink, '_blank');
+
+    showMsg('WhatsApp is opening with your message ready — just hit send there!', false);
+
+    setTimeout(() => {
+      sendBtn.innerHTML = originalLabel;
+      sendBtn.disabled = false;
+    }, 2000);
+  });
+});
